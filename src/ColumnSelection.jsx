@@ -1,8 +1,9 @@
 import React from "react"
 import {find} from "lodash"
-import Header from './Header.jsx';
 import BoardSelector from './BoardSelector.jsx'
 import ListSelector from './ListSelector.jsx'
+
+const jQuery = window.jQuery;
 
 const ColumnSelection = React.createClass({
   getInitialState: function () {
@@ -102,7 +103,6 @@ const ColumnSelection = React.createClass({
   },
   render: function () {
     return (
-        <div id="card_url_div">
             <div className={"centered_content"}>
                 <div className="select-list--text-container">
                     <p>Select the board you want to prioritize</p>
@@ -117,7 +117,6 @@ const ColumnSelection = React.createClass({
                     <p><ListSelector lists={this.state.lists} onChange={this.handleListClicked} ></ListSelector></p>
                 }
             </div>
-        </div>
     )
   }
 });

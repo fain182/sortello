@@ -1,6 +1,8 @@
 import React from "react";
 import Header from './Header.jsx';
-import treeRebalancer from "../model/treeRebalancer";
+import treeRebalancer from "./model/treeRebalancer";
+
+const jQuery = window.jQuery;
 
 const Choices = React.createClass({
   getInitialState: function(){
@@ -26,9 +28,9 @@ const Choices = React.createClass({
       jQuery("#right_button .card_link").prop("href", compareNode.value.shortUrl);
       jQuery(".choices--button").click(function () {
         console.log("button clicked");
-        if ($(this).attr("id") == "left_button") {
+        if (jQuery(this).attr("id") === "left_button") {
           compareNode = node.goLeft(compareNode);
-        } else if ($(this).attr("id") == "right_button") {
+        } else if (jQuery(this).attr("id") === "right_button") {
           compareNode = node.goRight(compareNode);
         }
         jQuery(".choices--button").unbind("click");

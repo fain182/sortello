@@ -1,6 +1,5 @@
 import React from "react"
-import Header from './Header.jsx';
-import traverseTree from "../model/traverseTree"
+import traverseTree from "./model/traverseTree"
 
 const Results = React.createClass({
   getInitialState: function () {
@@ -20,14 +19,17 @@ const Results = React.createClass({
     var putCalls = reorderedNodes.length;
     var position = 100;
     var Trello = this.props.Trello;
-    for (var j = 0; j < reorderedNodes.length; j++) {
-      console.log(reorderedNodes[j]);
-      Trello.put('/cards/' + reorderedNodes[j].value.id, {pos: '' + position}, function () {
+
+    var trelloPutCallback = function () {
         putCalls--;
-        if (putCalls == 0) {
+        if (putCalls === 0) {
           showUploadDone();
         }
-      });
+      };
+
+    for (var j = 0; j < reorderedNodes.length; j++) {
+      console.log(reorderedNodes[j]);
+      Trello.put('/cards/' + reorderedNodes[j].value.id, {pos: '' + position}, trelloPutCallback);
       position += 100;
     }
   },

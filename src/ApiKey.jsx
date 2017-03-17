@@ -10,12 +10,12 @@ const ApiKey = React.createClass({
   },
   componentDidMount: function () {
     if (localStorage.getItem("sortelloTrelloDevApiKey")) {
-      this.state.apiKey = localStorage.getItem("sortelloTrelloDevApiKey")
+      this.setState({apiKey: localStorage.getItem("sortelloTrelloDevApiKey")});
       this.authenticateTrello();
     }
   },
   saveAPIKey : function(){
-    this.state.apiKey = document.getElementById("api_key").value
+    this.setState({apiKey: document.getElementById("api_key").value});
     localStorage.setItem('sortelloTrelloDevApiKey', this.state.apiKey);
     this.authenticateTrello();
   },
@@ -46,7 +46,6 @@ const ApiKey = React.createClass({
   },
   render: function () {
     return (
-        <div id="api_key_div">
           <div className={"centered_content"}>
 
           <div className="centered-logo">
@@ -105,7 +104,6 @@ const ApiKey = React.createClass({
                 <div className={"api-suggestion"}>Click here to get your API key</div>
             </a>
           </div>
-        </div>
     )
   }
 })

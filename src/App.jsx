@@ -1,16 +1,19 @@
-import React from "react" // ES6 import
-import ApiKey from "./components/ApiKey.jsx"
-import ColumnSelection from "./components/ColumnSelection.jsx"
-import Choices from "./components/Choices.jsx"
-import Results from "./components/Results.jsx"
+import React from "react"
+import ApiKey from "./ApiKey.jsx"
+import ColumnSelection from "./ColumnSelection.jsx"
+import Choices from "./Choices.jsx"
+import Results from "./Results.jsx"
 import treeNodeFactory from "./model/treeNodeFactory"
+
+const jQuery = window.jQuery;
+const Trello = window.Trello;
 
 const App = React.createClass({
   getInitialState: function () {
     return {
       apiKey: false,
       Trello: Trello,
-      nodes: Array(),
+      nodes: [],
       rootNode: null,
       currentView: 1 // 1-ApiKey 2-ColumnSelect 3-Choices 4-SendDataToServer
     };
@@ -38,7 +41,6 @@ const App = React.createClass({
     for (var i = 0; i < listCards.length; i++) {
       var node = treeNodeFactory(listCards[i]);
       nodes.push(node);
-      console.log(listCards[i])
     }
     this.setState({
       nodes: nodes,
@@ -59,21 +61,25 @@ const App = React.createClass({
       currentView: 4
     })
   },
-  render: function () {
-    if (2 == this.state.currentView) {
-      document.getElementById("api_key_div").style.marginTop = -1 * document.getElementById("api_key_div").offsetHeight
-    }
+  cardUrlMargin: function () {
     if (3 == this.state.currentView) {
-      document.getElementById("card_url_div").style.marginTop = -1 * document.getElementById("card_url_div").offsetHeight
+      return -1 * document.getElementById("card_url_div").offsetHeight;
     }
     if (4 == this.state.currentView) {
-      document.getElementById("card_url_div").style.marginTop = -2 * document.getElementById("card_url_div").offsetHeight
+      return -2 * document.getElementById("card_url_div").offsetHeight;
     }
+    return 0;
+  },
+  render: function () {
 
     return (
         <div id="container_div">
-          <ApiKey apikey={this.state.apiKey} Trello={this.state.Trello} setApiKey={this.setApiKey} />
-          <ColumnSelection apikey={this.state.apiKey} Trello={this.state.Trello} handleCards={this.handleCards}/>
+          <div id="api_key_div" style={{ marginTop: (2 == this.state.currentView ? -1 * document.getElementById("api_key_div").offsetHeight : 0)}}>
+            <ApiKey apikey={this.state.apiKey} Trello={this.state.Trello} setApiKey={this.setApiKey} />
+          </div>
+          <div id="card_url_div" style={{ marginTop: this.cardUrlMargin()}}>
+            <ColumnSelection apikey={this.state.apiKey} Trello={this.state.Trello} handleCards={this.handleCards}/>
+          </div>
           <Choices ref="choices" setSortedRootNode={this.setSortedRootNode} getNodes={this.getNodes}
                    getRootNode={this.getRootNode} />
           <Results getRootNode={this.getRootNode} Trello={this.state.Trello}/>
@@ -82,4 +88,4 @@ const App = React.createClass({
   },
 })
 
-export default App // important
+export default App

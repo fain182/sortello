@@ -6,13 +6,10 @@ Hosted version: https://mazzcris.github.io/sortello/
 
 ## Usage
 
-To run sortello on your machine:
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-`npm install`
-
-`npm start`
-
-Sortello will be available at localhost:4000
+You will find some information on how to perform common tasks 
+[here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
 ## Contributing
 
@@ -21,17 +18,3 @@ Sortello will be available at localhost:4000
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
-
-<!--
-## History
-
-TODO: Write history
-
-## Credits
-
-TODO: Write credits
-
-## License
-
-TODO: Write license
--->
