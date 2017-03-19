@@ -44,7 +44,7 @@ const App = React.createClass({
       rootNode: nodes[0],
       currentView: 3
     })
-    this.refs.choices.startChoices();
+    this.refs.choices.startChoices(nodes[0]);
   },
   setSortedRootNode: function (rootNode) {
     this.setState({
@@ -67,7 +67,7 @@ const App = React.createClass({
         <div id="container_div">
           <ApiKey apikey={this.state.apiKey} Trello={this.state.Trello} setApiKey={this.setApiKey} />
           <ColumnSelection apikey={this.state.apiKey} Trello={this.state.Trello} handleCards={this.handleCards}/>
-          <Choices ref="choices" setSortedRootNode={this.setSortedRootNode} nodes={this.state.nodes} rootNode={this.state.rootNode} />
+          <Choices ref="choices" setSortedRootNode={this.setSortedRootNode} nodes={this.state.nodes} />
           <Results rootNode={this.state.rootNode} Trello={this.state.Trello}/>
         </div>
     )

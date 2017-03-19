@@ -7,52 +7,51 @@ const Choices = React.createClass({
   getInitialState: function(){
     return {
       Trello: this.props.Trello,
-      leftNode: null,
+      rootNode: null,
+      currentNodeIndex: 1,
       rightNode: null
     }
   },
   endChoices: function(rootNode){
     this.props.setSortedRootNode(rootNode);
   },
-  startChoices: function(){
-
-    var nodes = this.props.nodes;
-    var rootNode = this.props.rootNode;
-    var component = this;
-
-    function getChoice(node, compareNode, currNode) {
-      component.setState({
-        leftNode: node,
-        rightNode: compareNode
-      });
-
-      jQuery(".choices--button").click(function () {
-        if ($(this).attr("id") == "left_button") {
-          compareNode = node.goLeft(compareNode);
-        } else if ($(this).attr("id") == "right_button") {
-          compareNode = node.goRight(compareNode);
-        }
-        jQuery(".choices--button").unbind("click");
-        if (node.isPositioned) {
-          rootNode = treeRebalancer(rootNode);
-          choicesCycle(currNode + 1);
-        } else {
-          getChoice(node, compareNode, currNode);
-        }
-      });
+  startChoices: function(rootNode){
+    this.setState({rootNode: rootNode})
+    this.choicesCycle();
+  },
+  getChoice: function (compareNode) {
+    this.setState({
+      rightNode: compareNode
+    });
+  },
+  getLeftNode: function() {
+    return this.props.nodes[this.state.currentNodeIndex];
+  },
+  choicesCycle: function () {
+    var index = this.state.currentNodeIndex
+    if (index < this.props.nodes.length) {
+      this.setState({currentNodeIndex: this.state.currentNodeIndex +1});
+      this.getChoice(this.state.rootNode);
+    } else {
+      this.endChoices(this.state.rootNode);
     }
-
-    function choicesCycle(currNode) {
-      if (currNode < nodes.length) {
-        getChoice(nodes[currNode], rootNode, currNode);
-      } else {
-        jQuery("#left_button").html("");
-        jQuery("#right_button").html("");
-        component.endChoices(rootNode);
-      }
+  },
+  handleClick: function (button) {
+    if (button == "left_button") {
+      this.setState({rightNode: this.state.rootNode.goLeft(this.state.rightNode)});
+    } else if (button == "right_button") {
+      this.setState({rightNode: this.state.rootNode.goRight(this.state.rightNode)});
     }
-
-    choicesCycle(1);
+    if (this.state.rootNode.isPositioned) {
+      var oldRoot = this.state.rootNode;
+      this.setState({
+        rootNode: treeRebalancer(oldRoot),
+        currentNodeIndex: this.state.currentNodeIndex +1
+      });
+      this.choicesCycle();
+    } else {
+      this.getChoice(this.state.rootNode, this.state.rightNode);
+    }
   },
   render: function() {
     if (this.state.leftNode == null || this.state.rightNode == null) {
@@ -64,8 +63,8 @@ const Choices = React.createClass({
             <p>Select the highest priority card</p>
           </div>
           <div className={"centered_content row choices--container"}>
-            <Card id="left_button" data={this.state.leftNode.value}/>
-            <Card id="right_button" data={this.state.rightNode.value}/>
+            <Card id="left_button" data={this.state.leftNode.value} onClick={() => {this.handleClick('left_button')}}/>
+            <Card id="right_button" data={this.state.rightNode.value} onClick={() => {this.handleClick('right_button')}}/>
           </div>
           <div className={"row logout--header"}>
             <Header />
